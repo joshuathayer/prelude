@@ -188,6 +188,10 @@
   
   (global-set-key [remap move-beginning-of-line]
                   'prelude-move-beginning-of-line)
+
+  (after "smartparens-autoloads"
+    (global-set-key [remap backward-up-list]
+                    'sp-backward-up-sexp))
   
   (global-set-key (kbd "M-x") 'ergoemacs-cut-line-or-region)
 
