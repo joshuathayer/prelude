@@ -3,7 +3,6 @@
    auto-complete
    diminish
    ergoemacs-mode
-   find-file-in-project
    framemove
    idle-highlight-mode
    ido-vertical-mode
