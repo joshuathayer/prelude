@@ -196,9 +196,6 @@
     (global-set-key (kbd "M-a") 'smex)
     (global-set-key (kbd "M-A") 'smex-major-mode-commands)
     (global-set-key (kbd "C-c C-c M-a") 'execute-extended-command))
-
-  (after "find-file-in-project-autoloads"
-    (global-set-key (kbd "C-o") 'zane-ffip-or-find-file))
   
   (cua-mode -1))
 
@@ -223,21 +220,6 @@
 (define-key ac-menu-map (kbd "M-k") 'ac-next)
 (global-auto-complete-mode t)
 ;; /auto-complete
-
-;; find-file-in-project
-(after 'find-file-in-project
-  (add-to-list 'ffip-patterns "*.erb")
-  (add-to-list 'ffip-patterns "*.yml")
-  (add-to-list 'ffip-patterns "*.css")
-  (setq ffip-find-options "-not -regex \".*cache.*\""))
-(after "find-file-in-project-autoloads"
-  (defun zane-ffip-or-find-file ()
-    "Try to ffip, but fall back to regular find file if not in the context of a project."
-    (interactive)
-    (condition-case ex
-        (find-file-in-project)
-      ('error (ido-find-file)))))
-;; /find-file-in-project
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
