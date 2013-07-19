@@ -36,17 +36,17 @@
 (load-theme 'solarized-dark)
 (when window-system
   (let ((default-font (if (z:mac-p)
-                        ;;  "-apple-Anonymous_Pro_Minus-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1"
-                         "Source Code Pro 12"
-                        ;;"Inconsolata-13"
-                        "Monospace 10")))
+                          "-apple-Anonymous_Pro_Minus-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1"
+                          ;; "DejaVu Sans Mono 11"
+                          ;; "Source Code Pro 12"
+                          ;; "Inconsolata-13"
+                          "Monospace 10")))
     (set-face-font 'default default-font))
   (scroll-bar-mode -1))
 
 (let ((cursor-color "#d33682"))
   (set-cursor-color cursor-color)
-  ;; (add-to-list 'default-frame-alist `(cursor-color . ,cursor-color))
-  )
+  (add-to-list 'default-frame-alist `(cursor-color . ,cursor-color)))
 
 ;; http://xahlee.blogspot.com/2009/08/how-to-use-and-setup-emacss-whitespace.html
 (setq whitespace-trailing-regexp
@@ -105,7 +105,7 @@
   (after 'yasnippet           (diminish 'yas-minor-mode))
 
   (after 'flycheck
-    (setq flycheck-mode-line-lighter " Κ")))
+    (setq flycheck-mode-line-lighter "Fl")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Coding
@@ -163,6 +163,21 @@
   (setq ergoemacs-theme "zane")
   (ergoemacs-mode 1)
 
+  ;; The default ergoemacs-kill-line-backward is `(interactive "p")',
+  ;; which coerces absent prefix arguments. The effect is that without
+  ;; an explicit prefix argument the command deletes 2 lines instead
+  ;; of the intended 1. This redefinition fixes that.
+  (defun ergoemacs-kill-line-backward (&optional number)
+    "Kill text between the beginning of the line to the cursor position.
+If there's no text, delete the previous line ending."
+    (interactive)
+    (message "%s" number)
+    (if (not number)
+        (if (looking-back "\n")
+            (delete-char -1)
+          (kill-line 0))
+      (kill-line (- 0 number))))
+
   (after 'windmove
     (define-key lisp-interaction-mode-map (kbd "C-j") nil)
     (global-set-key (kbd "H-i") 'windmove-up)
@@ -189,8 +204,8 @@
                   'prelude-move-beginning-of-line)
 
   (after "smartparens-autoloads"
-    (global-set-key [remap backward-up-list]
-                    'sp-backward-up-sexp))
+    (define-key smartparens-mode-map [remap backward-up-list]
+      'sp-backward-up-sexp))
   
   (global-set-key (kbd "M-x") 'ergoemacs-cut-line-or-region)
 
@@ -225,6 +240,27 @@
 (define-key ac-menu-map (kbd "M-k") 'ac-next)
 (global-auto-complete-mode t)
 ;; /auto-complete
+
+;; magit
+(after 'magit
+  (setq magit-status-buffer-switch-function 'switch-to-buffer)
+
+  ;; Make magit restore the original window configuration when you leave the
+  ;; magit buffer.
+  ;;
+  ;; http://whattheemacsd.com/setup-magit.el-01.html
+
+  (defadvice magit-status (around magit-fullscreen activate)
+    (window-configuration-to-register :magit-fullscreen)
+    ad-do-it
+    (delete-other-windows))
+
+  (defun magit-quit-session ()
+    "Restores the previous window configuration and kills the magit buffer"
+    (interactive)
+    (kill-buffer)
+    (jump-to-register :magit-fullscreen)))
+;; /magit
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
