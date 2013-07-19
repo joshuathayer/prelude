@@ -225,7 +225,6 @@ If there's no text, delete the previous line ending."
 
 ;; auto-complete
 (require 'auto-complete)
-
 (setq ac-comphist-file (expand-file-name "ac-comphist.dat" prelude-savefile-dir))
 (setq ac-auto-start nil)
 (setq ac-show-menu-immediately-on-auto-complete t)
@@ -240,6 +239,10 @@ If there's no text, delete the previous line ending."
 (define-key ac-menu-map (kbd "M-k") 'ac-next)
 (global-auto-complete-mode t)
 ;; /auto-complete
+
+;; pcache
+(setq pcache-directory (expand-file-name "pcache" prelude-savefile-dir))
+;; /pcache
 
 ;; magit
 (after 'magit
