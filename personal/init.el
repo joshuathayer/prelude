@@ -105,7 +105,7 @@
   (after 'yasnippet           (diminish 'yas-minor-mode))
 
   (after 'flycheck
-    (setq flycheck-mode-line-lighter "Fl")))
+    (setq flycheck-mode-line-lighter " Fl")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Coding
