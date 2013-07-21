@@ -204,7 +204,7 @@ If there's no text, delete the previous line ending."
   (global-set-key [remap move-beginning-of-line]
                   'prelude-move-beginning-of-line)
 
-  (after "smartparens-autoloads"
+  (after 'smartparens
     (define-key smartparens-mode-map [remap backward-up-list]
       'sp-backward-up-sexp))
   
@@ -277,6 +277,11 @@ If there's no text, delete the previous line ending."
   (after 'auto-complete
     (add-to-list 'ac-modes 'nrepl-mode)))
 ;; /ac-nrepl
+
+;; smartparens
+(after 'smartparens
+  (setq sp-base-key-bindings 'paredit))
+;; /smartparens
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
