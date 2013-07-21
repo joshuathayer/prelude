@@ -1,5 +1,6 @@
 (prelude-ensure-module-deps
- '(ack-and-a-half
+ '(ac-nrepl
+   ack-and-a-half
    auto-complete
    diminish
    ergoemacs-mode
@@ -264,6 +265,18 @@ If there's no text, delete the previous line ending."
     (kill-buffer)
     (jump-to-register :magit-fullscreen)))
 ;; /magit
+
+;; ac-nrepl
+(after "ac-nrepl-autoloads"
+  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+
+  ;; use ac-nrepl instead of nrepl-doc
+  (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
+
+  (after 'auto-complete
+    (add-to-list 'ac-modes 'nrepl-mode)))
+;; /ac-nrepl
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
