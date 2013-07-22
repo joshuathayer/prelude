@@ -1,3 +1,5 @@
+;; TODO: Set up and use the `jedi' package
+
 (prelude-ensure-module-deps
  '(ac-nrepl
    ack-and-a-half
