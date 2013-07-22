@@ -192,6 +192,8 @@
   (setq ergoemacs-theme "zane")
   (ergoemacs-mode 1)
 
+  (global-set-key (kbd "C-x y") 'bury-buffer)
+
   ;; The default ergoemacs-kill-line-backward is `(interactive "p")',
   ;; which coerces absent prefix arguments. The effect is that without
   ;; an explicit prefix argument the command deletes 2 lines instead
