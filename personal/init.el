@@ -10,6 +10,7 @@
    multiple-cursors
    nrepl
    rainbow-delimiters
+   solarized-theme
    windmove
    yasnippet))
 
