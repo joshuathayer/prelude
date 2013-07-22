@@ -134,6 +134,18 @@
                                                                 "ƒ")
                                                 nil))))))
 
+;; js2
+(after 'js2-mode
+  (setq js2-basic-offset 2)
+  (setq js2-include-node-externs t)
+  (setq js2-include-browser-externs t)
+
+  (after "ac-js2-autoloads"
+    (require 'ac-js2)
+    (setq ac-js2-evaluate-calls t)))
+;; /js2
+
+;; flycheck
 (after "flycheck-autoloads"
   ;; Use flycheck for all modes that aren't emacs-lisp-mode
   (defun zane-maybe-turn-on-flycheck-mode ()
@@ -144,6 +156,7 @@
   (after 'flycheck
     (set-face-attribute 'flycheck-error nil :underline "red")
     (set-face-attribute 'flycheck-warning nil :underline "yellow")))
+;; /flycheck
 
 ;; smartparens
 (after 'smartparens
