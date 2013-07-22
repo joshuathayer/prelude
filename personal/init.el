@@ -268,6 +268,7 @@ If there's no text, delete the previous line ending."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; auto-complete
+(require 'pos-tip)
 (require 'auto-complete)
 (setq ac-comphist-file (expand-file-name "ac-comphist.dat" prelude-savefile-dir))
 (setq ac-auto-start nil)
