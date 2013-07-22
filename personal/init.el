@@ -258,6 +258,11 @@ If there's no text, delete the previous line ending."
   
   (cua-mode -1))
 
+(after "git-gutter-fringe-autoloads"
+  (require 'git-gutter-fringe)
+  (global-git-gutter-mode t)
+  (setq flycheck-indication-mode nil))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
