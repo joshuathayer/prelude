@@ -57,7 +57,6 @@
 (setq whitespace-action '(auto-cleanup warn-if-read-only))
 (global-whitespace-mode 1)
 
-
 (after "rainbow-delimiters-autoloads"
   (defun zane-turn-on-rainbow-delimiters-mode ()
     (rainbow-delimiters-mode 1))
@@ -90,27 +89,30 @@
 
   ;; http://whattheemacsd.com//appearance.el-01.html
   (rename-modeline 'lisp-mode emacs-lisp-mode "EL")
-  (rename-modeline 'js js-mode "JS")
   (rename-modeline 'lisp-mode lisp-interaction-mode "LI")
+  (rename-modeline 'js js-mode "JS")
 
-  (after 'eldoc           (diminish 'eldoc-mode             " ed"))
-  (after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode   " sn"))
-  (after 'paredit         (diminish 'paredit-mode           " pe"))
-  (after 'simple          (diminish 'auto-fill-function     " af"))
-
-  (after 'auto-complete       (diminish 'auto-complete-mode))
+  (after 'eldoc           (diminish 'eldoc-mode           " ed"))
+  (after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode " sn"))
+  (after 'git-gutter      (diminish 'git-gutter-mode      " gg"))
+  (after 'paredit         (diminish 'paredit-mode         " pe"))
+  (after 'simple          (diminish 'auto-fill-function   " af"))
+  (after 'smartparens     (diminish 'smartparens-mode     " sp"))
 
   (defun diminish-ergoemacs-mode ()
     (diminish 'ergoemacs-mode))
   (add-hook 'ergoemacs-mode-hook 'diminish-ergoemacs-mode)
 
+  (after 'auto-complete       (diminish 'auto-complete-mode))
+  (after 'prelude-mode        (diminish 'prelude-mode))
+  (after 'projectile          (diminish 'projectile-mode))
   (after 'undo-tree           (diminish 'undo-tree-mode))
   (after 'volatile-highlights (diminish 'volatile-highlights-mode))
   (after 'whitespace          (diminish 'global-whitespace-mode))
   (after 'yasnippet           (diminish 'yas-minor-mode))
 
   (after 'flycheck
-    (setq flycheck-mode-line-lighter " Fl")))
+    (setq flycheck-mode-line-lighter " fl")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Coding
