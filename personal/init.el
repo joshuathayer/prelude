@@ -14,6 +14,10 @@
    windmove
    yasnippet))
 
+(defvar user-home-directory
+  (expand-file-name (concat user-emacs-directory "../"))
+  "The user's home directory.")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functions and Macros
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -152,6 +156,10 @@
   (after 'auto-complete
     (add-to-list 'ac-modes 'nrepl-mode)))
 ;; /ac-nrepl
+
+(let ((floobits-file-name (expand-file-name "Projects/floobits/floobits.el" user-home-directory)))
+  (when (file-exists-p floobits-file-name)
+    (load-file floobits-file-name)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keybindings and Ergoemacs
