@@ -136,6 +136,12 @@
   (after 'flycheck
     (set-face-attribute 'flycheck-error nil :underline "red")
     (set-face-attribute 'flycheck-warning nil :underline "yellow")))
+
+;; smartparens
+(after 'smartparens
+  (setq sp-base-key-bindings 'paredit))
+;; /smartparens
+
 ;; ac-nrepl
 (after "ac-nrepl-autoloads"
   (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
@@ -218,7 +224,11 @@ If there's no text, delete the previous line ending."
 
   (after 'smartparens
     (define-key smartparens-mode-map [remap backward-up-list]
-      'sp-backward-up-sexp))
+      'sp-backward-up-sexp)
+    ;; https://github.com/Fuco1/smartparens/wiki/Paredit-and-smartparens#random-differences
+    (define-key smartparens-mode-map (kbd ")") 'sp-up-sexp)
+    (setq sp-navigate-close-if-unbalanced t))
+
   ;; use ac-nrepl instead of nrepl-doc
   (after 'nrepl
     (define-key nrepl-mode-map [remap nrepl-doc] 'ac-nrepl-popup-doc) ;
@@ -281,12 +291,6 @@ If there's no text, delete the previous line ending."
     (kill-buffer)
     (jump-to-register :magit-fullscreen)))
 ;; /magit
-
-
-;; smartparens
-(after 'smartparens
-  (setq sp-base-key-bindings 'paredit))
-;; /smartparens
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
