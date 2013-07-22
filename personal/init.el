@@ -68,7 +68,10 @@
                  lisp-mode-hook
                  python-mode-hook)))
     (dolist (hook hooks)
-      (add-hook hook 'zane-turn-on-rainbow-delimiters-mode))))
+      (add-hook hook 'zane-turn-on-rainbow-delimiters-mode)))
+
+  (after 'nrepl
+    (add-hook 'nrepl-mode-hook 'zane-turn-on-rainbow-delimiters-mode)))
 
 (after 'paren
   (set-face-background 'show-paren-match nil)
@@ -132,6 +135,14 @@
   (after 'flycheck
     (set-face-attribute 'flycheck-error nil :underline "red")
     (set-face-attribute 'flycheck-warning nil :underline "yellow")))
+;; ac-nrepl
+(after "ac-nrepl-autoloads"
+  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+
+  (after 'auto-complete
+    (add-to-list 'ac-modes 'nrepl-mode)))
+;; /ac-nrepl
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keybindings and Ergoemacs
@@ -207,6 +218,10 @@ If there's no text, delete the previous line ending."
   (after 'smartparens
     (define-key smartparens-mode-map [remap backward-up-list]
       'sp-backward-up-sexp))
+  ;; use ac-nrepl instead of nrepl-doc
+  (after 'nrepl
+    (define-key nrepl-mode-map [remap nrepl-doc] 'ac-nrepl-popup-doc) ;
+    (define-key nrepl-interaction-mode-map [remap nrepl-doc] 'ac-nrepl-popup-doc))
   
   (global-set-key (kbd "M-x") 'ergoemacs-cut-line-or-region)
 
@@ -266,17 +281,6 @@ If there's no text, delete the previous line ending."
     (jump-to-register :magit-fullscreen)))
 ;; /magit
 
-;; ac-nrepl
-(after "ac-nrepl-autoloads"
-  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-
-  ;; use ac-nrepl instead of nrepl-doc
-  (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
-
-  (after 'auto-complete
-    (add-to-list 'ac-modes 'nrepl-mode)))
-;; /ac-nrepl
 
 ;; smartparens
 (after 'smartparens
