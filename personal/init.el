@@ -1,4 +1,5 @@
 ;; TODO: Set up and use the `jedi' package
+(require 'f)
 
 (prelude-ensure-module-deps
  '(ac-nrepl
@@ -6,6 +7,7 @@
    auto-complete
    diminish
    ergoemacs-mode
+   f
    framemove
    idle-highlight-mode
    ido-vertical-mode
@@ -17,7 +19,7 @@
    yasnippet))
 
 (defvar user-home-directory
-  (expand-file-name (concat user-emacs-directory "../"))
+  (f-expand ".." user-emacs-directory)
   "The user's home directory.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -171,9 +173,11 @@
     (add-to-list 'ac-modes 'nrepl-mode)))
 ;; /ac-nrepl
 
-(let ((floobits-file-name (expand-file-name "Projects/floobits/floobits.el" user-home-directory)))
-  (when (file-exists-p floobits-file-name)
+;; floobits
+(let ((floobits-file-name (f-expand "Projects/floobits/floobits.el" user-home-directory)))
+  (when (f-exists? floobits-file-name)
     (load-file floobits-file-name)))
+;; /floobits
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keybindings and Ergoemacs
@@ -231,7 +235,7 @@ If there's no text, delete the previous line ending."
     (global-set-key (kbd "C-k") 'windmove-down))
 
   (after "multiple-cursors-autoloads"
-    (setq mc/list-file (expand-file-name ".mc-lists.el" prelude-savefile-dir))
+    (setq mc/list-file (f-expand ".mc-lists.el" prelude-savefile-dir))
     
     (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
     (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -282,9 +286,8 @@ If there's no text, delete the previous line ending."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; auto-complete
-(require 'pos-tip)
 (require 'auto-complete)
-(setq ac-comphist-file (expand-file-name "ac-comphist.dat" prelude-savefile-dir))
+(setq ac-comphist-file (f-expand "ac-comphist.dat" prelude-savefile-dir))
 (setq ac-auto-start nil)
 (setq ac-show-menu-immediately-on-auto-complete t)
 (setq ac-dwim t)
@@ -300,7 +303,7 @@ If there's no text, delete the previous line ending."
 ;; /auto-complete
 
 ;; pcache
-(setq pcache-directory (expand-file-name "pcache" prelude-savefile-dir))
+(setq pcache-directory (f-expand "pcache" prelude-savefile-dir))
 ;; /pcache
 
 ;; magit
