@@ -82,8 +82,7 @@
 (after 'paren
   (set-face-background 'show-paren-match nil)
   (set-face-foreground 'show-paren-match nil)
-  (set-face-inverse-video-p 'show-paren-match nil)
-  (set-face-attribute 'show-paren-match nil :underline (face-background 'cursor)))
+  (set-face-inverse-video-p 'show-paren-match nil))
 
 (after "ido-vertical-mode-autoloads" (ido-vertical-mode +1))
 
