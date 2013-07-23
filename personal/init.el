@@ -126,6 +126,9 @@
 ;; Coding
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(after 'electric
+  (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode))
+
 (after 'js
   (setq js-indent-level 2)
   (define-key js-mode-map (kbd ",") 'self-insert-command)
