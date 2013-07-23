@@ -11,6 +11,7 @@
    framemove
    idle-highlight-mode
    ido-vertical-mode
+   kibit-mode
    multiple-cursors
    nrepl
    pos-tip
