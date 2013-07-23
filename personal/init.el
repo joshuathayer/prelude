@@ -13,6 +13,7 @@
    ido-vertical-mode
    multiple-cursors
    nrepl
+   pos-tip
    rainbow-delimiters
    solarized-theme
    windmove
