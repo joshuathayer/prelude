@@ -306,6 +306,7 @@ If there's no text, delete the previous line ending."
   (define-key ac-menu-map (kbd "M-k") 'ac-next))
 ;; This is a weird hack to get M-1 working again when the
 ;; auto-complete menu is active. Huge bummer that this is necessary.
+;; https://github.com/auto-complete/auto-complete/issues/243
 (defun ac-complete-1 (candidate)
   (interactive "i")
   (when (and (not candidate)
