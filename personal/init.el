@@ -293,18 +293,43 @@ If there's no text, delete the previous line ending."
 ;; auto-complete
 (require 'auto-complete)
 (setq ac-comphist-file (f-expand "ac-comphist.dat" prelude-savefile-dir))
-(setq ac-auto-start nil)
+(setq ac-auto-start 4)
 (setq ac-show-menu-immediately-on-auto-complete t)
 (setq ac-dwim t)
-(setq ac-delay 0)
+(setq ac-delay 0.2)
 (setq ac-expand-on-auto-complete t)
 (ac-set-trigger-key "TAB")
 (setq ac-use-menu-map t)
-(setq ac-use-fuzzy nil)
-(after 'fuzzy (setq ac-use-fuzzy t))
-(define-key ac-menu-map (kbd "M-i") 'ac-previous)
-(define-key ac-menu-map (kbd "M-k") 'ac-next)
 (global-auto-complete-mode t)
+(when ac-use-menu-map
+  (define-key ac-menu-map (kbd "M-i") 'ac-previous)
+  (define-key ac-menu-map (kbd "M-k") 'ac-next))
+;; This is a weird hack to get M-1 working again when the
+;; auto-complete menu is active. Huge bummer that this is necessary.
+(defun ac-complete-1 (candidate)
+  (interactive "i")
+  (when (and (not candidate)
+             (ac-menu-live-p)
+             (popup-select ac-menu 0))
+    (ac-complete))
+  (let ((action (popup-item-property candidate 'action))
+        (fallback nil))
+    (when candidate
+      (unless (ac-expand-string candidate)
+        (setq fallback t))
+      ;; Remember to show help later
+      (when (and ac-point candidate)
+        (unless ac-last-completion
+          (setq ac-last-completion (cons (make-marker) nil)))
+        (set-marker (car ac-last-completion) ac-point ac-buffer)
+        (setcdr ac-last-completion candidate)))
+    (ac-abort)
+    (cond
+     (action
+      (funcall action))
+     (fallback
+      (ac-fallback-command)))
+    candidate))
 ;; /auto-complete
 
 ;; pcache
