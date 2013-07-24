@@ -1,6 +1,4 @@
 ;; TODO: Set up and use the `jedi' package
-(require 'f)
-
 (prelude-ensure-module-deps
  '(ac-nrepl
    ack-and-a-half
@@ -19,6 +17,8 @@
    solarized-theme
    windmove
    yasnippet))
+
+(require 'f)
 
 (defvar user-home-directory
   (f-expand ".." user-emacs-directory)
