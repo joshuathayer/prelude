@@ -10,6 +10,7 @@
    idle-highlight-mode
    ido-vertical-mode
    kibit-mode
+   midje-mode
    multiple-cursors
    nrepl
    pos-tip
@@ -307,30 +308,14 @@ If there's no text, delete the previous line ending."
 ;; This is a weird hack to get M-1 working again when the
 ;; auto-complete menu is active. Huge bummer that this is necessary.
 ;; https://github.com/auto-complete/auto-complete/issues/243
-(defun ac-complete-1 (candidate)
-  (interactive "i")
-  (when (and (not candidate)
-             (ac-menu-live-p)
-             (popup-select ac-menu 0))
-    (ac-complete))
-  (let ((action (popup-item-property candidate 'action))
-        (fallback nil))
-    (when candidate
-      (unless (ac-expand-string candidate)
-        (setq fallback t))
-      ;; Remember to show help later
-      (when (and ac-point candidate)
-        (unless ac-last-completion
-          (setq ac-last-completion (cons (make-marker) nil)))
-        (set-marker (car ac-last-completion) ac-point ac-buffer)
-        (setcdr ac-last-completion candidate)))
-    (ac-abort)
-    (cond
-     (action
-      (funcall action))
-     (fallback
-      (ac-fallback-command)))
-    candidate))
+(dotimes (i 9)
+  (let ((symbol (intern (format "ac-complete-select-%d" (1+ i)))))
+    (fset symbol
+          `(lambda ()
+             (interactive)
+             (when (and (ac-menu-live-p) (popup-select ac-menu ,i))
+               (ac-complete))))
+    (define-key ac-completing-map (read-kbd-macro (format "M-%s" (1+ i))) symbol)))
 ;; /auto-complete
 
 ;; pcache
