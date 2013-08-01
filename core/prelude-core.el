@@ -415,7 +415,11 @@ Doesn't mess with special buffers."
     "Press <S-RET> or <M-o> to open a new beneath the current one."
     "Press <s-o> to open a line above the current one."
     "Press <C-c C-z> in a Elisp buffer to launch an interactive Elisp shell."
-    "Explore the Prelude menu to find out about some of Prelude extensions to Emacs."
+    "Press <C-Backspace> to kill a line backwards."
+    "Press <C-S-Backspace> or <s-k> to kill the whole line."
+    "Press <f11> to toggle fullscreen mode."
+    "Press <f12> to toggle the menu bar."
+    "Explore the Tools->Prelude menu to find out about some of Prelude extensions to Emacs."
     "Access the official Emacs manual by pressing <C-h r>."
     "Visit WikEmacs at http://wikemacs.org to find out even more about Emacs."))
 
@@ -513,6 +517,18 @@ With numeric prefix arg INC, increment the integer by INC amount."
 With numeric prefix arg DEC, decrement the integer by DEC amount."
   (interactive "p")
   (prelude-increment-integer-at-point (- (or dec 1))))
+
+;;; Emacs in OSX already has fullscreen support
+;;; Emacs has a similar built-in command in 24.4
+(defun prelude-fullscreen ()
+  "Make Emacs window fullscreen.
+
+This follows freedesktop standards, should work in X servers."
+  (interactive)
+  (if (eq window-system 'x)
+      (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+                             '(2 "_NET_WM_STATE_FULLSCREEN" 0))
+    (error "Only X server is supported")))
 
 (provide 'prelude-core)
 ;;; prelude-core.el ends here

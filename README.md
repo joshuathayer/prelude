@@ -134,6 +134,7 @@ By default most of the modules that ship with Prelude are not loaded.
 ;; (require 'prelude-scala)
 (require 'prelude-scheme)
 ;; (require 'prelude-scss)
+;; (require 'prelude-web)
 (require 'prelude-xml)
 ```
 
@@ -205,6 +206,7 @@ Keybinding         | Description
 <kbd>C-h A</kbd>   | Run `apropos` (search in all Emacs symbols).
 <kbd>M-/</kbd>     | Run `hippie-expand` (a replacement for the default `dabbrev-expand`).
 <kbd>C-x C-b</kbd> | Open `ibuffer` (a replacement for the default `buffer-list`).
+<kbd>F11</kbd>     | Make the window full screen.
 <kbd>F12</kbd>     | Toggle the Emacs menu bar.
 <kbd>C-x g</kbd>   | Open Magit's status buffer.
 <kbd>C-=</kbd>     | Run `expand-region` (incremental text selection).
@@ -342,7 +344,9 @@ Or you can use another theme altogether by adding something like:
 (load-theme 'solarized-dark t)
 ```
 
-P.S. Solarized is not available by default - you'll have to install it from MELPA first.
+**P.S.** Solarized is not available by default - you'll have to
+  install it from MELPA first (`M-x package-install RET
+  solarized-theme`).
 
 ### Personalizing
 
