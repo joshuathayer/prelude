@@ -297,7 +297,7 @@ If there's no text, delete the previous line ending."
 (setq ac-auto-start 4)
 (setq ac-show-menu-immediately-on-auto-complete t)
 (setq ac-dwim t)
-(setq ac-delay 0.2)
+(setq ac-delay 0.4)
 (setq ac-expand-on-auto-complete t)
 (ac-set-trigger-key "TAB")
 (setq ac-use-menu-map t)
