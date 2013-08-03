@@ -69,20 +69,17 @@
 (global-whitespace-mode 1)
 
 (after "rainbow-delimiters-autoloads"
-  (defun zane-turn-on-rainbow-delimiters-mode ()
-    (rainbow-delimiters-mode 1))
-
   (setq-default frame-background-mode 'dark)
   (let ((hooks '(emacs-lisp-mode-hook
                  clojure-mode-hook
-                 javascript-mode-hook
+                 js-mode
                  lisp-mode-hook
                  python-mode-hook)))
     (dolist (hook hooks)
-      (add-hook hook 'zane-turn-on-rainbow-delimiters-mode)))
+      (add-hook hook 'rainbow-delimiters-mode-enable)))
 
   (after 'nrepl
-    (add-hook 'nrepl-mode-hook 'zane-turn-on-rainbow-delimiters-mode)))
+    (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode-enable)))
 
 (after 'paren
   (set-face-background 'show-paren-match nil)
