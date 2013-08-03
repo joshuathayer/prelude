@@ -333,6 +333,28 @@ If there's no text, delete the previous line ending."
     (jump-to-register :magit-fullscreen)))
 ;; /magit
 
+;; web-mode
+(after 'web-mode
+  (defun flycheck-turn-off ()
+    "Disable flycheck mode."
+    (flycheck-mode -1))
+  (add-hook 'web-mode-hook 'flycheck-turn-off)
+
+  (defun font-lock-turn-off ()
+    "Disable font-lock mode."
+    (font-lock-mode -1))
+  (add-hook 'web-mode-hook 'font-lock-turn-off)
+
+  (add-hook 'web-mode-hook 'rainbow-turn-off)
+
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+;; /web-mode
+
+(after 'markdown-mode
+  (setq markdown-command "gfm"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
