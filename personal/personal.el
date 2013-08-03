@@ -19,6 +19,9 @@
    windmove
    yasnippet))
 
+(setq prelude-flyspell nil)
+(setq prelude-guru nil)
+
 (require 'f)
 
 (defvar user-home-directory
