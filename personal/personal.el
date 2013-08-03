@@ -150,16 +150,9 @@
 ;; /js2
 
 ;; flycheck
-(after "flycheck-autoloads"
-  ;; Use flycheck for all modes that aren't emacs-lisp-mode
-  (defun zane-maybe-turn-on-flycheck-mode ()
-    (when (not (equal 'emacs-lisp-mode major-mode))
-      (flycheck-mode)))
-  (add-hook 'find-file-hook 'zane-maybe-turn-on-flycheck-mode)
-  
-  (after 'flycheck
-    (set-face-attribute 'flycheck-error nil :underline "red")
-    (set-face-attribute 'flycheck-warning nil :underline "yellow")))
+(after 'flycheck
+  (set-face-attribute 'flycheck-error nil :underline "red")
+  (set-face-attribute 'flycheck-warning nil :underline "yellow"))
 ;; /flycheck
 
 ;; smartparens
