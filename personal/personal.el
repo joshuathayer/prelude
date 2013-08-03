@@ -356,7 +356,8 @@ If there's no text, delete the previous line ending."
 ;; /web-mode
 
 (after 'markdown-mode
-  (setq markdown-command "gfm"))
+  (when (executable-find "gfm")
+      (setq markdown-command "gfm")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
