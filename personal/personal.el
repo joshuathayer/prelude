@@ -1,32 +1,16 @@
-;; TODO: Set up and use the `jedi' package
 (prelude-ensure-module-deps
- '(ac-nrepl
-   ack-and-a-half
+ '(ack-and-a-half
    auto-complete
    diminish
-   ergoemacs-mode
-   f
+;;   ergoemacs-mode
    framemove
    idle-highlight-mode
    ido-vertical-mode
-   kibit-mode
-   midje-mode
    multiple-cursors
    nrepl
-   pos-tip
    rainbow-delimiters
-   solarized-theme
    windmove
    yasnippet))
-
-(setq prelude-flyspell nil)
-(setq prelude-guru nil)
-
-(require 'f)
-
-(defvar user-home-directory
-  (f-expand ".." user-emacs-directory)
-  "The user's home directory.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functions and Macros
@@ -52,17 +36,17 @@
 (load-theme 'solarized-dark)
 (when window-system
   (let ((default-font (if (z:mac-p)
-                          "-apple-Anonymous_Pro_Minus-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1"
-                          ;; "DejaVu Sans Mono 11"
-                          ;; "Source Code Pro 12"
-                          ;; "Inconsolata-13"
-                          "Monospace 10")))
+                        ;;  "-apple-Anonymous_Pro_Minus-medium-normal-normal-*-12-*-*-*-m-0-iso10646-1"
+                         "Source Code Pro 12"
+                        ;;"Inconsolata-13"
+                        "Monospace 10")))
     (set-face-font 'default default-font))
   (scroll-bar-mode -1))
 
 (let ((cursor-color "#d33682"))
   (set-cursor-color cursor-color)
-  (add-to-list 'default-frame-alist `(cursor-color . ,cursor-color)))
+  ;; (add-to-list 'default-frame-alist `(cursor-color . ,cursor-color))
+  )
 
 ;; http://xahlee.blogspot.com/2009/08/how-to-use-and-setup-emacss-whitespace.html
 (setq whitespace-trailing-regexp
@@ -71,23 +55,25 @@
 (setq whitespace-action '(auto-cleanup warn-if-read-only))
 (global-whitespace-mode 1)
 
+
 (after "rainbow-delimiters-autoloads"
+  (defun zane-turn-on-rainbow-delimiters-mode ()
+    (rainbow-delimiters-mode 1))
+
   (setq-default frame-background-mode 'dark)
   (let ((hooks '(emacs-lisp-mode-hook
                  clojure-mode-hook
-                 js-mode
+                 javascript-mode-hook
                  lisp-mode-hook
                  python-mode-hook)))
     (dolist (hook hooks)
-      (add-hook hook 'rainbow-delimiters-mode-enable)))
-
-  (after 'nrepl
-    (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode-enable)))
+      (add-hook hook 'zane-turn-on-rainbow-delimiters-mode))))
 
 (after 'paren
   (set-face-background 'show-paren-match nil)
   (set-face-foreground 'show-paren-match nil)
-  (set-face-inverse-video-p 'show-paren-match nil))
+  (set-face-inverse-video-p 'show-paren-match nil)
+  (set-face-attribute 'show-paren-match nil :underline (face-background 'cursor)))
 
 (after "ido-vertical-mode-autoloads" (ido-vertical-mode +1))
 
@@ -99,37 +85,31 @@
 
   ;; http://whattheemacsd.com//appearance.el-01.html
   (rename-modeline 'lisp-mode emacs-lisp-mode "EL")
-  (rename-modeline 'lisp-mode lisp-interaction-mode "LI")
   (rename-modeline 'js js-mode "JS")
+  (rename-modeline 'lisp-mode lisp-interaction-mode "LI")
 
-  (after 'eldoc           (diminish 'eldoc-mode           " ed"))
-  (after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode " sn"))
-  (after 'git-gutter      (diminish 'git-gutter-mode      " gg"))
-  (after 'paredit         (diminish 'paredit-mode         " pe"))
-  (after 'simple          (diminish 'auto-fill-function   " af"))
-  (after 'smartparens     (diminish 'smartparens-mode     " sp"))
-
-  (defun diminish-ergoemacs-mode ()
-    (diminish 'ergoemacs-mode))
-  (add-hook 'ergoemacs-mode-hook 'diminish-ergoemacs-mode)
+  (after 'eldoc           (diminish 'eldoc-mode             " ed"))
+  (after 'elisp-slime-nav (diminish 'elisp-slime-nav-mode   " sn"))
+  (after 'paredit         (diminish 'paredit-mode           " pe"))
+  (after 'simple          (diminish 'auto-fill-function     " af"))
 
   (after 'auto-complete       (diminish 'auto-complete-mode))
-  (after 'prelude-mode        (diminish 'prelude-mode))
-  (after 'projectile          (diminish 'projectile-mode))
+
+  ;; (defun diminish-ergoemacs-mode ()
+  ;;   (diminish 'ergoemacs-mode))
+  ;; (add-hook 'ergoemacs-mode-hook 'diminish-ergoemacs-mode)
+
   (after 'undo-tree           (diminish 'undo-tree-mode))
   (after 'volatile-highlights (diminish 'volatile-highlights-mode))
   (after 'whitespace          (diminish 'global-whitespace-mode))
   (after 'yasnippet           (diminish 'yas-minor-mode))
 
   (after 'flycheck
-    (setq flycheck-mode-line-lighter " fl")))
+    (setq flycheck-mode-line-lighter " Κ")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Coding
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(after 'electric
-  (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode))
 
 (after 'js
   (setq js-indent-level 2)
@@ -141,42 +121,16 @@
                                                                 "ƒ")
                                                 nil))))))
 
-;; js2
-(after 'js2-mode
-  (setq js2-basic-offset 2)
-  (setq js2-include-node-externs t)
-  (setq js2-include-browser-externs t)
-
-  (after "ac-js2-autoloads"
-    (require 'ac-js2)
-    (setq ac-js2-evaluate-calls t)))
-;; /js2
-
-;; flycheck
-(after 'flycheck
-  (set-face-attribute 'flycheck-error nil :underline "red")
-  (set-face-attribute 'flycheck-warning nil :underline "yellow"))
-;; /flycheck
-
-;; smartparens
-(after 'smartparens
-  (setq sp-base-key-bindings 'paredit))
-;; /smartparens
-
-;; ac-nrepl
-(after "ac-nrepl-autoloads"
-  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-
-  (after 'auto-complete
-    (add-to-list 'ac-modes 'nrepl-mode)))
-;; /ac-nrepl
-
-;; floobits
-(let ((floobits-file-name (f-expand "Projects/floobits/floobits.el" user-home-directory)))
-  (when (f-exists? floobits-file-name)
-    (load-file floobits-file-name)))
-;; /floobits
+(after "flycheck-autoloads"
+  ;; Use flycheck for all modes that aren't emacs-lisp-mode
+  (defun zane-maybe-turn-on-flycheck-mode ()
+    (when (not (equal 'emacs-lisp-mode major-mode))
+      (flycheck-mode)))
+  (add-hook 'find-file-hook 'zane-maybe-turn-on-flycheck-mode)
+  
+  (after 'flycheck
+    (set-face-attribute 'flycheck-error nil :underline "red")
+    (set-face-attribute 'flycheck-warning nil :underline "yellow")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keybindings and Ergoemacs
@@ -186,99 +140,69 @@
 ;; http://stackoverflow.com/questions/1792326/how-do-i-bind-a-command-to-c-i-without-changing-tab
 (keyboard-translate ?\C-i ?\H-i)
 
-(require 'ergoemacs-mode)
+;; (require 'ergoemacs-mode)
 
-(after 'ergoemacs-mode
-  (setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us")
+;; (after 'ergoemacs-mode
+;;   (setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us")
 
-  (ergoemacs-deftheme zane
-    "Zane Shelby theme -- ALL key except <apps> and <menu> keys."
-    nil
-    (ergoemacs-replace-key 'ergoemacs-smex-if-exists "M-a" "M-a")
-    (ergoemacs-replace-key 'ergoemacs-cut-line-or-region "M-x" "✂ region")
-    (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(forward-char ido-next-match-dir minor-mode-overriding-map-alist))
-    (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(backward-char ido-prev-match-dir minor-mode-overriding-map-alist))
-    (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(previous-line ido-prev-match minor-mode-overriding-map-alist))
-    (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(next-line ido-next-match minor-mode-overriding-map-alist))
-    ;; "<M-backspace>" backward-kill-word
-    (setq ergoemacs-variable-layout-tmp
-          (remove-if (lambda (x) (or (string-match "<apps>" (car x))
-				     (string-match "<menu>" (car x))
-				     (string-match "<M-backspace>" (car x))))
-                     ergoemacs-variable-layout)))
-  (setq ergoemacs-theme "zane")
-  (ergoemacs-mode 1)
+;;   (ergoemacs-deftheme zane
+;;     "Zane Shelby theme -- ALL key except <apps> and <menu> keys."
+;;     nil
+;;     (ergoemacs-replace-key 'ergoemacs-smex-if-exists "M-a" "M-a")
+;;     (ergoemacs-replace-key 'ergoemacs-cut-line-or-region "M-x" "✂ region")
+;;     (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(forward-char ido-next-match-dir minor-mode-overriding-map-alist))
+;;     (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(backward-char ido-prev-match-dir minor-mode-overriding-map-alist))
+;;     (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(previous-line ido-prev-match minor-mode-overriding-map-alist))
+;;     (ergoemacs-minor-key 'ido-minibuffer-setup-hook '(next-line ido-next-match minor-mode-overriding-map-alist))
+;;     ;; "<M-backspace>" backward-kill-word
+;;     (setq ergoemacs-variable-layout-tmp
+;;           (remove-if (lambda (x) (or (string-match "<apps>" (car x))
+;; 				     (string-match "<menu>" (car x))
+;; 				     (string-match "<M-backspace>" (car x))))
+;;                      ergoemacs-variable-layout)))
+;;   (setq ergoemacs-theme "zane")
+;;   (ergoemacs-mode 1)
 
-  (global-set-key (kbd "C-x y") 'bury-buffer)
+;;   (after 'windmove
+;;     (define-key lisp-interaction-mode-map (kbd "C-j") nil)
+;;     (global-set-key (kbd "H-i") 'windmove-up)
+;;     (global-set-key (kbd "C-l") 'windmove-right)
+;;     (global-set-key (kbd "C-j") 'windmove-left)
+;;     (global-set-key (kbd "C-k") 'windmove-down))
 
-  ;; The default ergoemacs-kill-line-backward is `(interactive "p")',
-  ;; which coerces absent prefix arguments. The effect is that without
-  ;; an explicit prefix argument the command deletes 2 lines instead
-  ;; of the intended 1. This redefinition fixes that.
-  (defun ergoemacs-kill-line-backward (&optional number)
-    "Kill text between the beginning of the line to the cursor position.
-If there's no text, delete the previous line ending."
-    (interactive)
-    (message "%s" number)
-    (if (not number)
-        (if (looking-back "\n")
-            (delete-char -1)
-          (kill-line 0))
-      (kill-line (- 0 number))))
-
-  (after 'windmove
-    (define-key lisp-interaction-mode-map (kbd "C-j") nil)
-    (global-set-key (kbd "H-i") 'windmove-up)
-    (global-set-key (kbd "C-l") 'windmove-right)
-    (global-set-key (kbd "C-j") 'windmove-left)
-    (global-set-key (kbd "C-k") 'windmove-down))
-
-  (after "multiple-cursors-autoloads"
-    (setq mc/list-file (f-expand ".mc-lists.el" prelude-savefile-dir))
+;;   (after "multiple-cursors-autoloads"
+;;     (setq mc/list-file (expand-file-name ".mc-lists.el" prelude-savefile-dir))
     
-    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+;;     (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+;;     (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+;;     (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+;;     (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
-  (after "expand-region-autoloads"
-    (global-set-key (kbd "M->") 'er/expand-region)
-    (global-set-key (kbd "M-<") 'er/contract-region))
+;;   (after "expand-region-autoloads"
+;;     (global-set-key (kbd "M->") 'er/expand-region)
+;;     (global-set-key (kbd "M-<") 'er/contract-region))
   
-  (after 'dired
-    (define-key dired-mode-map (kbd "C-o") nil))
+;;   (after 'dired
+;;     (define-key dired-mode-map (kbd "C-o") nil))
   
-  (global-set-key [remap move-beginning-of-line]
-                  'prelude-move-beginning-of-line)
+;;   (global-set-key [remap move-beginning-of-line]
+;;                   'prelude-move-beginning-of-line)
 
-  (after 'smartparens
-    (define-key smartparens-mode-map [remap backward-up-list]
-      'sp-backward-up-sexp)
-    ;; https://github.com/Fuco1/smartparens/wiki/Paredit-and-smartparens#random-differences
-    (define-key smartparens-mode-map (kbd ")") 'sp-up-sexp)
-    (setq sp-navigate-close-if-unbalanced t))
-
-  ;; use ac-nrepl instead of nrepl-doc
-  (after 'nrepl
-    (define-key nrepl-mode-map [remap nrepl-doc] 'ac-nrepl-popup-doc) ;
-    (define-key nrepl-interaction-mode-map [remap nrepl-doc] 'ac-nrepl-popup-doc))
+;;   (after "smartparens-autoloads"
+;;     (global-set-key [remap backward-up-list]
+;;                     'sp-backward-up-sexp))
   
-  (global-set-key (kbd "M-x") 'ergoemacs-cut-line-or-region)
+;;   (global-set-key (kbd "M-x") 'ergoemacs-cut-line-or-region)
 
-  (after 'nrepl
-    (define-key nrepl-mode-map (kbd "C-j") nil))
+;;   (after 'nrepl
+;;     (define-key nrepl-mode-map (kbd "C-j") nil))
 
-  (after "smex-autoloads"
-    (global-set-key (kbd "M-a") 'smex)
-    (global-set-key (kbd "M-A") 'smex-major-mode-commands)
-    (global-set-key (kbd "C-c C-c M-a") 'execute-extended-command))
+;;   (after "smex-autoloads"
+;;     (global-set-key (kbd "M-a") 'smex)
+;;     (global-set-key (kbd "M-A") 'smex-major-mode-commands)
+;;     (global-set-key (kbd "C-c C-c M-a") 'execute-extended-command))
   
-  (cua-mode -1))
-
-(after "git-gutter-fringe-autoloads"
-  (require 'git-gutter-fringe)
-  (global-git-gutter-mode t)
-  (setq flycheck-indication-mode nil))
+;;   (cua-mode -1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
@@ -286,78 +210,21 @@ If there's no text, delete the previous line ending."
 
 ;; auto-complete
 (require 'auto-complete)
-(setq ac-comphist-file (f-expand "ac-comphist.dat" prelude-savefile-dir))
-(setq ac-auto-start 4)
+
+(setq ac-comphist-file (expand-file-name "ac-comphist.dat" prelude-savefile-dir))
+(setq ac-auto-start nil)
 (setq ac-show-menu-immediately-on-auto-complete t)
 (setq ac-dwim t)
-(setq ac-delay 0.4)
+(setq ac-delay 0)
 (setq ac-expand-on-auto-complete t)
 (ac-set-trigger-key "TAB")
 (setq ac-use-menu-map t)
+(setq ac-use-fuzzy nil)
+(after 'fuzzy (setq ac-use-fuzzy t))
+(define-key ac-menu-map (kbd "M-i") 'ac-previous)
+(define-key ac-menu-map (kbd "M-k") 'ac-next)
 (global-auto-complete-mode t)
-(when ac-use-menu-map
-  (define-key ac-menu-map (kbd "M-i") 'ac-previous)
-  (define-key ac-menu-map (kbd "M-k") 'ac-next))
-;; This is a weird hack to get M-1 working again when the
-;; auto-complete menu is active. Huge bummer that this is necessary.
-;; https://github.com/auto-complete/auto-complete/issues/243
-(dotimes (i 9)
-  (let ((symbol (intern (format "ac-complete-select-%d" (1+ i)))))
-    (fset symbol
-          `(lambda ()
-             (interactive)
-             (when (and (ac-menu-live-p) (popup-select ac-menu ,i))
-               (ac-complete))))
-    (define-key ac-completing-map (read-kbd-macro (format "M-%s" (1+ i))) symbol)))
 ;; /auto-complete
-
-;; pcache
-(setq pcache-directory (f-expand "pcache" prelude-savefile-dir))
-;; /pcache
-
-;; magit
-(after 'magit
-  (setq magit-status-buffer-switch-function 'switch-to-buffer)
-
-  ;; Make magit restore the original window configuration when you leave the
-  ;; magit buffer.
-  ;;
-  ;; http://whattheemacsd.com/setup-magit.el-01.html
-
-  (defadvice magit-status (around magit-fullscreen activate)
-    (window-configuration-to-register :magit-fullscreen)
-    ad-do-it
-    (delete-other-windows))
-
-  (defun magit-quit-session ()
-    "Restores the previous window configuration and kills the magit buffer"
-    (interactive)
-    (kill-buffer)
-    (jump-to-register :magit-fullscreen)))
-;; /magit
-
-;; web-mode
-(after 'web-mode
-  (defun flycheck-turn-off ()
-    "Disable flycheck mode."
-    (flycheck-mode -1))
-  (add-hook 'web-mode-hook 'flycheck-turn-off)
-
-  (defun font-lock-turn-off ()
-    "Disable font-lock mode."
-    (font-lock-mode -1))
-  (add-hook 'web-mode-hook 'font-lock-turn-off)
-
-  (add-hook 'web-mode-hook 'rainbow-turn-off)
-
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2))
-;; /web-mode
-
-(after 'markdown-mode
-  (when (executable-find "gfm")
-      (setq markdown-command "gfm")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual Bell
